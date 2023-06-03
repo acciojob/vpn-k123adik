@@ -7,14 +7,23 @@ public class Connection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
+
+    @ManyToOne
+    @JoinColumn
+    private ServiceProvider serviceProvider;
+
+    @ManyToOne
+    @JoinColumn
+    private User user;
 
     public Connection() {
     }
 
-    public Connection(int id) {
+    public Connection(int id, ServiceProvider serviceProvider, User user) {
         this.id = id;
+        this.serviceProvider = serviceProvider;
+        this.user = user;
     }
 
     public int getId() {
@@ -40,12 +49,4 @@ public class Connection {
     public void setUser(User user) {
         this.user = user;
     }
-
-    @ManyToOne
-    @JoinColumn
-    ServiceProvider serviceProvider;
-
-    @ManyToOne
-    @JoinColumn
-    User user;
 }

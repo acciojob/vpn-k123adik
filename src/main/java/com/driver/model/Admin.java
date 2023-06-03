@@ -1,6 +1,6 @@
 package com.driver.model;
 
-import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
+
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,24 +9,25 @@ import java.util.List;
 @Entity
 public class Admin {
 
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Id
     private int id;
 
-    @Column(name = "user_name")
-    private String userName;
+    private String username;
 
-    @Column(name = "password")
     private String password;
 
-    public Admin(int id, String userName, String password) {
-        this.id = id;
-        this.userName = userName;
-        this.password = password;
-    }
+    @OneToMany(mappedBy = "admin",cascade = CascadeType.ALL)
+    List<ServiceProvider> serviceProviders = new ArrayList<>();
 
     public Admin() {
+    }
+
+    public Admin(int id, String username, String password, List<ServiceProvider> serviceProviders) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.serviceProviders = serviceProviders;
     }
 
     public int getId() {
@@ -37,12 +38,12 @@ public class Admin {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -60,7 +61,4 @@ public class Admin {
     public void setServiceProviders(List<ServiceProvider> serviceProviders) {
         this.serviceProviders = serviceProviders;
     }
-
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
-    private List<ServiceProvider> serviceProviders = new ArrayList<>();
 }
